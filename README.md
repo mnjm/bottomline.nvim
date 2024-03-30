@@ -1,4 +1,5 @@
-# bottomline.nvim - Yet another neovim statusline
+# bottomline.nvim
+**Yet another neovim statusline**
 
 A simple minimal statusline plugin with gitsigns and LSP integrations.
 
@@ -7,7 +8,7 @@ A simple minimal statusline plugin with gitsigns and LSP integrations.
 
 ## Installation
 
-```
+```lua
 'mnjm/bottomline.nvim'
 ```
 Install with your favorite plugin manager
@@ -20,7 +21,7 @@ Dependencies - Optional
 
 ### Default configurations
 
-```
+```lua
 highlights = {
     {'SLDefault',       {fg = "#ffffff", bg="#282828", gui=nil}},
     {'SLNormalMode',    {fg = "#000000", bg="#5faf00", gui="bold"}},
@@ -51,11 +52,11 @@ lsp_symbols = {
 
 You can pass sub-table to custom configurations to setup call, for ex
 
-```
+```lua
 require('bottomline.nvim').setup({
     highlights = {
-        {'SLDefault',       {fg = "#000000", bg="#282828", gui=nil}},
-        {'SLNormalMode',    {fg = "#ffffff", bg="#5faf00", gui="bold"}},
+        {'SLDefault',       {fg = "#000000", bg="#5faf00", gui=nil}},
+        {'SLNormalMode',    {fg = "#ffffff", bg="#282828", gui="bold"}},
     },
     enable_lsp = false,
     git_symbols = { branch = "" },
