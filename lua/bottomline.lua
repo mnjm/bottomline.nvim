@@ -1,7 +1,9 @@
--- Derived from
---
--- https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html
--- https://elianiva.my.id/post/neovim-lua-statusline
+-- Author - mnjm - github.com/mnjm
+-- Repo - github/mnjm/bottomline.nvim
+
+---------------------------------------------------
+----------------- BottomLine Main -----------------
+---------------------------------------------------
 
 local M = {}
 
@@ -108,7 +110,6 @@ local function get_gitinfo()
             ret = string.format("%s %s%s", ret, v[2], v[1])
         end
     end
-    -- TODO: change branch
     ret = string.format("%s %s %s ", ret, M.config.git_symbols.branch, gitsigns.head)
     return ret
 end
