@@ -9,16 +9,16 @@ local M = {}
 
 local default_config = {
     highlights = {
-        {'SLDefault',       {fg = "#ffffff", bg="#282828", gui=nil}},
-        {'SLNormalMode',    {fg = "#000000", bg="#5faf00", gui="bold"}},
-        {'SLReplaceMode',   {fg = "#000000", bg="#d7875f", gui="bold"}},
-        {'SLCommandMode',   {fg = "#000000", bg="#ffaf00", gui="bold"}},
-        {'SLInsertMode',    {fg = "#000000", bg="#5fafd7", gui="bold"}},
-        {'SLVisualMode',    {fg = "#000000", bg="#ff5faf", gui="bold"}},
-        {'SLUnknownMode',   {fg = "#000000", bg="#b3684f", gui="bold"}},
-        {'SLTrail',         {fg = "#ffffff", bg="#585858", gui=nil}},
-        {'SLOtherInfo',     {fg = "#000000", bg="#5f8787", gui=nil}},
-        {'SLFileInfo',      {fg = "#000000", bg="#00afaf", gui="bold"}},
+        {'BLDefault',       {fg = "#ffffff", bg="#282828", gui=nil}},
+        {'BLNormalMode',    {fg = "#000000", bg="#5faf00", gui="bold"}},
+        {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", gui="bold"}},
+        {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", gui="bold"}},
+        {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", gui="bold"}},
+        {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", gui="bold"}},
+        {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", gui="bold"}},
+        {'BLTrail',         {fg = "#ffffff", bg="#585858", gui=nil}},
+        {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", gui=nil}},
+        {'BLFileInfo',      {fg = "#000000", bg="#00afaf", gui="bold"}},
     },
     enable_git = true,
     enable_lsp = true,
@@ -54,19 +54,19 @@ end
 
 -- Show mode
 local modes = {
-    ["n"] = {"NORMAL", 'SLNormalMode'},
-    ["no"] = {"NORMAL", 'SLNormalMode'},
-    ["v"] = {"VISUAL", 'SLVisualMode'},
-    ["V"] = {"V-LINE", 'SLVisualMode'},
-    [""] = {"V-BLOCK", 'SLVisualMode'},
+    ["n"] = {"NORMAL", 'BLNormalMode'},
+    ["no"] = {"NORMAL", 'BLNormalMode'},
+    ["v"] = {"VISUAL", 'BLVisualMode'},
+    ["V"] = {"V-LINE", 'BLVisualMode'},
+    [""] = {"V-BLOCK", 'BLVisualMode'},
     ["s"] = {"SELECT"},
     ["S"] = {"S-LINE"},
     [""] = {"S-BLOCK"},
-    ["i"] = {"INSERT", "SLInsertMode"},
-    ["ic"] = {"INSERT", "SLInsertMode"},
-    ["R"] = {"REPLACE", "SLReplaceMode"},
-    ["Rv"] = {"V-REPLACE", "SLReplaceMode"},
-    ["c"] = {"COMMAND", "SLCommandMode"},
+    ["i"] = {"INSERT", "BLInsertMode"},
+    ["ic"] = {"INSERT", "BLInsertMode"},
+    ["R"] = {"REPLACE", "BLReplaceMode"},
+    ["Rv"] = {"V-REPLACE", "BLReplaceMode"},
+    ["c"] = {"COMMAND", "BLCommandMode"},
     ["cv"] = {"VIM EX"},
     ["ce"] = {"EX"},
     ["r"] = {"PROMPT"},
@@ -81,10 +81,10 @@ local function get_mode()
     local current_mode = vim.api.nvim_get_mode().mode
     current_mode = modes[current_mode]
     if current_mode == nil then
-        current_mode = {"  ?  ", "SLUnknownMode"}
+        current_mode = {"  ?  ", "BLUnknownMode"}
     end
     if current_mode[2] == nil then
-        current_mode[2] = "SLUnknownMode"
+        current_mode[2] = "BLUnknownMode"
     end
     return string.format(" %s ", current_mode[1]), current_mode[2]
 end
@@ -180,55 +180,54 @@ local set_winbar = function()
     local wins = vim.api.nvim_tabpage_list_wins(0) -- get windows in the current tabpage
     if #wins > 1 then -- if more than 1 windows in the current tabpage
         vim.opt.winbar = table.concat {
-            "%#SLFileInfo#", " %<%t%m%r ",
-            "%#SLDefault#", "%=",
-            "%#SLNormalMode#", get_buffernumber()
+            "%#BLFileInfo#", " %<%t%m%r ",
+            "%#BLDefault#", "%=",
+            "%#BLNormalMode#", get_buffernumber()
         }
         return
     end
     vim.opt.winbar = ""
 end
 
-BottomLine = {}
-BottomLine.active = function()
+M.active = function()
     local mode, mode_color = get_mode()
     mode_color = "%#"..mode_color.."#"
     local lspinfo = get_lspinfo()
     return table.concat {
         mode_color, mode,
-        "%#SLOtherInfo#", get_gitinfo(),
-        "%#SLDefault#", "%=",
-        "%#SLFileInfo#", get_filepath(),
-        "%#SLDefault#", "%=",
-        "%#SLOtherInfo#", lspinfo,
-        "%#SLTrail#", get_filetype(),
+        "%#BLOtherInfo#", get_gitinfo(),
+        "%#BLDefault#", "%=",
+        "%#BLFileInfo#", get_filepath(),
+        "%#BLDefault#", "%=",
+        "%#BLOtherInfo#", lspinfo,
+        "%#BLTrail#", get_filetype(),
         mode_color, get_lineinfo(),
     }
 end
 
-BottomLine.inactive = function()
+M.inactive = function()
     return table.concat {
-        "%#SLDefault#", "%=",
-        "%#SLTrail#", get_filepath(),
-        "%#SLDefault#", "%=",
-        "%#SLTrail#", get_buffernumber()
+        "%#BLDefault#", "%=",
+        "%#BLTrail#", get_filepath(),
+        "%#BLDefault#", "%=",
+        "%#BLTrail#", get_buffernumber()
     }
 end
 
 local setup_statusline = function()
-    vim.opt.statusline='%!v:lua.BottomLine.active()'
+    vim.opt.statusline='%!v:lua._bottomline.active()'
     local _au = vim.api.nvim_create_augroup('BottomLine augroup', { clear = true })
     -- enter aucmd
     vim.api.nvim_create_autocmd({'WinEnter', 'BufEnter'}, {
         pattern = "*",
-        command = 'setlocal statusline=%!v:lua.BottomLine.active()',
+        command = 'setlocal statusline=%!v:lua._bottomline.active()',
         group = _au,
         desc = "Setup active statusline",
     })
     -- leave aucmd
     vim.api.nvim_create_autocmd({'WinLeave', 'BufLeave'}, {
         pattern = "*",
-        command = 'setlocal statusline=%!v:lua.BottomLine.inactive()',
+        command = 'setlocal statusline=%!v:lua._bottomline.inactive()',
         group = _au,
         desc = "Setup inactive statusline",
     })
@@ -242,6 +241,8 @@ local setup_statusline = function()
 end
 
 function M.setup(cfg)
+    -- Exposing plugin
+    _G._bottomline = M
     -- Config
     init_config(cfg)
     -- Create highlights
