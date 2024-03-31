@@ -6,7 +6,7 @@ A simple minimal statusline plugin with gitsigns and LSP integrations.
 ![Demo image](./demo-imgs/1.png)
 ![Demo image](./demo-imgs/2.png)
 
-- Checkout [topline.nvim](https://github.com/mnjm/topline.nvim) for similar varient for tabline
+- Checkout [topline.nvim](https://github.com/mnjm/topline.nvim) for tabline plugin
 
 ## Installation
 
