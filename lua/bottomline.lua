@@ -1,5 +1,5 @@
 -- Author - mnjm - github.com/mnjm
--- Repo - github/mnjm/bottomline.nvim
+-- Repo - github.com/mnjm/bottomline.nvim
 
 ---------------------------------------------------
 ----------------- BottomLine Main -----------------

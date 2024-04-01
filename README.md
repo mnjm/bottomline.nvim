@@ -25,16 +25,16 @@ Dependencies - Optional
 
 ```lua
 highlights = {
-    {'SLDefault',       {fg = "#ffffff", bg="#282828", gui=nil}},
-    {'SLNormalMode',    {fg = "#000000", bg="#5faf00", gui="bold"}},
-    {'SLReplaceMode',   {fg = "#000000", bg="#d7875f", gui="bold"}},
-    {'SLCommandMode',   {fg = "#000000", bg="#ffaf00", gui="bold"}},
-    {'SLInsertMode',    {fg = "#000000", bg="#5fafd7", gui="bold"}},
-    {'SLVisualMode',    {fg = "#000000", bg="#ff5faf", gui="bold"}},
-    {'SLUnknownMode',   {fg = "#000000", bg="#b3684f", gui="bold"}},
-    {'SLTrail',         {fg = "#ffffff", bg="#585858", gui=nil}},
-    {'SLOtherInfo',     {fg = "#000000", bg="#5f8787", gui=nil}},
-    {'SLFileInfo',      {fg = "#000000", bg="#00afaf", gui="bold"}},
+    {'BLDefault',       {fg = "#ffffff", bg="#282828", gui=nil}},
+    {'BLNormalMode',    {fg = "#000000", bg="#5faf00", gui="bold"}},
+    {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", gui="bold"}},
+    {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", gui="bold"}},
+    {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", gui="bold"}},
+    {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", gui="bold"}},
+    {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", gui="bold"}},
+    {'BLTrail',         {fg = "#ffffff", bg="#585858", gui=nil}},
+    {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", gui=nil}},
+    {'BLFileInfo',      {fg = "#000000", bg="#00afaf", gui="bold"}},
 },
 enable_git = true,
 enable_lsp = true,
@@ -57,8 +57,8 @@ You can pass sub-table to custom configurations to setup call, for ex
 ```lua
 require('bottomline.nvim').setup({
     highlights = {
-        {'SLDefault',       {fg = "#000000", bg="#5faf00", gui=nil}},
-        {'SLNormalMode',    {fg = "#ffffff", bg="#282828", gui="bold"}},
+        {'BLDefault',       {fg = "#000000", bg="#5faf00", gui=nil}},
+        {'BLNormalMode',    {fg = "#ffffff", bg="#282828", gui="bold"}},
     },
     enable_lsp = false,
     git_symbols = { branch = "" },
