@@ -1,7 +1,10 @@
 # bottomline.nvim
 **Yet another neovim statusline**
 
-A simple minimal statusline plugin with gitsigns and LSP integrations.
+A simple minimal statusline plugin that supports
+- gitsigns
+- LSP
+- winbar
 
 ![Demo image](./demo-imgs/1.png)
 ![Demo image](./demo-imgs/2.png)
@@ -38,6 +41,8 @@ highlights = {
 },
 enable_git = true,
 enable_lsp = true,
+enable_winbar = true,
+display_buf_no = false,
 git_symbols = {
     branch = "",
     added = "+",
@@ -52,7 +57,7 @@ lsp_symbols = {
 },
 ```
 
-You can pass sub-table to custom configurations to setup call, for ex
+You can pass custom configurations to setup call, for ex
 
 ```lua
 require('bottomline.nvim').setup({
@@ -61,6 +66,7 @@ require('bottomline.nvim').setup({
         {'BLNormalMode',    {fg = "#ffffff", bg="#282828", gui="bold"}},
     },
     enable_lsp = false,
+    display_buf_no = true,
     git_symbols = { branch = "" },
 })
 ```

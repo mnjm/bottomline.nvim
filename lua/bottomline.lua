@@ -22,6 +22,8 @@ local default_config = {
     },
     enable_git = true,
     enable_lsp = true,
+    enable_winbar = true,
+    display_buf_no = false,
     git_symbols = {
         branch = "",
         added = "+",
@@ -174,26 +176,36 @@ end
 local function get_buffernumber()
     return " B:%n "
 end
+--
+-- [helperfuc] check if given window is relative
+local is_window_relative = function(win_id)
+    return vim.api.nvim_win_get_config(win_id).relative ~= ''
+end
 
 -- Winbar
-local set_winbar = function()
+local generate_winbar = function()
     local wins = vim.api.nvim_tabpage_list_wins(0) -- get windows in the current tabpage
-    if #wins > 1 then -- if more than 1 windows in the current tabpage
-        vim.opt.winbar = table.concat {
-            "%#BLFileInfo#", " %<%t%m%r ",
-            "%#BLDefault#", "%=",
-            "%#BLNormalMode#", get_buffernumber()
-        }
-        return
+    -- count fixed (non relative windows)
+    local count = 0
+    for _, win_id in ipairs(wins) do
+        if not is_window_relative(win_id) then count = count + 1 end
     end
-    vim.opt.winbar = ""
+    local winbar = ""
+    if count > 1 then -- if more than 1 fixed windows in the current tabpage
+        winbar = "%#BLFileInfo# %<%t%m%r %#BLDefault#"
+        if M.config.display_buf_no then
+            winbar = winbar .. "%=%#BLFileInfo#" .. get_buffernumber()
+        end
+    end
+    -- set winbar
+    vim.opt.winbar = winbar
 end
 
 M.active = function()
     local mode, mode_color = get_mode()
     mode_color = "%#"..mode_color.."#"
     local lspinfo = get_lspinfo()
-    return table.concat {
+    local ret = table.concat {
         mode_color, mode,
         "%#BLOtherInfo#", get_gitinfo(),
         "%#BLDefault#", "%=",
@@ -201,8 +213,18 @@ M.active = function()
         "%#BLDefault#", "%=",
         "%#BLOtherInfo#", lspinfo,
         "%#BLTrail#", get_filetype(),
-        mode_color, get_lineinfo(),
     }
+    if M.config.display_buf_no then
+        ret = ret .. table.concat {
+            "%#BLOtherInfo#", get_lineinfo(),
+            mode_color, get_buffernumber(),
+        }
+    else
+        ret = ret .. table.concat {
+            mode_color, get_lineinfo(),
+        }
+    end
+    return ret
 end
 
 M.inactive = function()
@@ -216,7 +238,7 @@ end
 
 local setup_statusline = function()
     vim.opt.statusline='%!v:lua._bottomline.active()'
-    local _au = vim.api.nvim_create_augroup('BottomLine augroup', { clear = true })
+    local _au = vim.api.nvim_create_augroup('BottomLine statusline', { clear = true })
     -- enter aucmd
     vim.api.nvim_create_autocmd({'WinEnter', 'BufEnter'}, {
         pattern = "*",
@@ -231,10 +253,15 @@ local setup_statusline = function()
         group = _au,
         desc = "Setup inactive statusline",
     })
+end
+
+local setup_winbar = function()
+    if not M.config.enable_winbar then return end
+    local _au = vim.api.nvim_create_augroup('BottomLine winbar', { clear = true })
     -- Winbar
     vim.api.nvim_create_autocmd({'WinEnter', 'WinLeave'}, {
         pattern = "*",
-        callback = set_winbar,
+        callback = generate_winbar,
         group = _au,
         desc = "Setup winbar statusline",
     })
@@ -249,6 +276,8 @@ function M.setup(cfg)
     setup_highlights()
     -- Create statusline autocommands
     setup_statusline()
+    -- enable winbar
+    setup_winbar()
 end
 
 return M
