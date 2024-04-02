@@ -1,9 +1,8 @@
--- Author - mnjm - github.com/mnjm
--- Repo - github.com/mnjm/bottomline.nvim
-
 ---------------------------------------------------
 ----------------- BottomLine Main -----------------
 ---------------------------------------------------
+-- Author - mnjm - github.com/mnjm
+-- Repo - github.com/mnjm/bottomline.nvim
 
 local M = {}
 
@@ -38,9 +37,22 @@ local default_config = {
     },
 }
 
+local validate_config = function(cfg)
+    vim.validate({ highlights = { cfg.highlights, "table" } })
+    vim.validate({ git_symbols = { cfg.git_symbols, "table" } })
+    vim.validate({ lsp_symbols = { cfg.lsp_symbols, "table" } })
+    vim.validate({ enable_git = { cfg.enable_git, "table" } })
+    vim.validate({ enable_lsp = { cfg.enable_lsp, "table" } })
+    vim.validate({ enable_winbar = { cfg.enable_winbar, "table" } })
+    vim.validate({ display_buf_no = { cfg.display_buf_no, "table" } })
+end
+
 local init_config = function(cfg)
+    vim.validate({ cfg = { cfg, 'table' } })
     cfg = cfg or {}
-    M.config = vim.tbl_deep_extend("keep", cfg, default_config)
+    local config = vim.tbl_deep_extend("keep", cfg, default_config)
+    validate_config(config)
+    return config
 end
 
 local setup_highlights = function()
@@ -271,7 +283,7 @@ function M.setup(cfg)
     -- Exposing plugin
     _G._bottomline = M
     -- Config
-    init_config(cfg)
+    M.config = init_config(cfg)
     -- Create highlights
     setup_highlights()
     -- Create statusline autocommands
