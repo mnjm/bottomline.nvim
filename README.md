@@ -6,8 +6,8 @@ A simple minimal statusline plugin that supports
 - LSP
 - winbar
 
-![Demo image](./demo-imgs/1.png)
-![Demo image](./demo-imgs/2.png)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/1.png)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/2.png)
 
 - Checkout [topline.nvim](https://github.com/mnjm/topline.nvim) for tabline plugin
 
