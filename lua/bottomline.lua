@@ -8,16 +8,16 @@ local M = {}
 
 local default_config = {
     highlights = {
-        {'BLDefault',       {fg = "#ffffff", bg="#282828", gui=nil}},
-        {'BLNormalMode',    {fg = "#000000", bg="#5faf00", gui="bold"}},
-        {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", gui="bold"}},
-        {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", gui="bold"}},
-        {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", gui="bold"}},
-        {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", gui="bold"}},
-        {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", gui="bold"}},
-        {'BLTrail',         {fg = "#ffffff", bg="#585858", gui=nil}},
-        {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", gui=nil}},
-        {'BLFileInfo',      {fg = "#000000", bg="#00afaf", gui="bold"}},
+        {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
+        {'BLNormalMode',    {fg = "#000000", bg="#5faf00", bold = true}},
+        {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", bold = true}},
+        {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", bold = true}},
+        {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", bold = true}},
+        {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
+        {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", bold = true}},
+        {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
+        {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", bold = false}},
+        {'BLFileInfo',      {fg = "#000000", bg="#00afaf", bold = true}},
     },
     enable_git = true,
     enable_lsp = true,
@@ -41,10 +41,10 @@ local validate_config = function(cfg)
     vim.validate({ highlights = { cfg.highlights, "table" } })
     vim.validate({ git_symbols = { cfg.git_symbols, "table" } })
     vim.validate({ lsp_symbols = { cfg.lsp_symbols, "table" } })
-    vim.validate({ enable_git = { cfg.enable_git, "table" } })
-    vim.validate({ enable_lsp = { cfg.enable_lsp, "table" } })
-    vim.validate({ enable_winbar = { cfg.enable_winbar, "table" } })
-    vim.validate({ display_buf_no = { cfg.display_buf_no, "table" } })
+    vim.validate({ enable_git = { cfg.enable_git, "boolean" } })
+    vim.validate({ enable_lsp = { cfg.enable_lsp, "boolean" } })
+    vim.validate({ enable_winbar = { cfg.enable_winbar, "boolean" } })
+    vim.validate({ display_buf_no = { cfg.display_buf_no, "boolean" } })
 end
 
 local init_config = function(cfg)
@@ -56,13 +56,10 @@ local init_config = function(cfg)
 end
 
 local setup_highlights = function()
+    -- Set highlights listed in config
     local highlights = M.config.highlights
-    for _, highlight in pairs(highlights) do
-        local name = highlight[1]
-        local fg = highlight[2].fg
-        local bg = highlight[2].bg
-        local gui = highlight[2].gui == nil and "" or string.format("gui=%s", highlight[2].gui)
-        vim.cmd(string.format('hi %s guibg=%s guifg=%s %s', name, bg, fg, gui))
+    for _, hl in pairs(highlights) do
+        vim.api.nvim_set_hl(0, hl[1], hl[2])
     end
 end
 
@@ -204,7 +201,7 @@ local generate_winbar = function()
     end
     local winbar = ""
     if count > 1 then -- if more than 1 fixed windows in the current tabpage
-        winbar = "%#BLFileInfo# %<%t%m%r %#BLDefault#"
+        winbar = "%#BLFileInfo# %<%t%m%r %#BLFill#"
         if M.config.display_buf_no then
             winbar = winbar .. "%=%#BLFileInfo#" .. get_buffernumber()
         end
@@ -220,9 +217,9 @@ M.active = function()
     local ret = table.concat {
         mode_color, mode,
         "%#BLOtherInfo#", get_gitinfo(),
-        "%#BLDefault#", "%=",
+        "%#BLFill#", "%=",
         "%#BLFileInfo#", get_filepath(),
-        "%#BLDefault#", "%=",
+        "%#BLFill#", "%=",
         "%#BLOtherInfo#", lspinfo,
         "%#BLTrail#", get_filetype(),
     }
@@ -241,9 +238,9 @@ end
 
 M.inactive = function()
     return table.concat {
-        "%#BLDefault#", "%=",
+        "%#BLFill#", "%=",
         "%#BLTrail#", get_filepath(),
-        "%#BLDefault#", "%=",
+        "%#BLFill#", "%=",
         "%#BLTrail#", get_buffernumber()
     }
 end

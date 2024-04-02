@@ -28,16 +28,16 @@ Dependencies - Optional
 
 ```lua
 highlights = {
-    {'BLDefault',       {fg = "#ffffff", bg="#282828", gui=nil}},
-    {'BLNormalMode',    {fg = "#000000", bg="#5faf00", gui="bold"}},
-    {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", gui="bold"}},
-    {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", gui="bold"}},
-    {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", gui="bold"}},
-    {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", gui="bold"}},
-    {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", gui="bold"}},
-    {'BLTrail',         {fg = "#ffffff", bg="#585858", gui=nil}},
-    {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", gui=nil}},
-    {'BLFileInfo',      {fg = "#000000", bg="#00afaf", gui="bold"}},
+    {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
+    {'BLNormalMode',    {fg = "#000000", bg="#5faf00", bold = true}},
+    {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", bold = true}},
+    {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", bold = true}},
+    {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", bold = true}},
+    {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
+    {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", bold = true}},
+    {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
+    {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", bold = false}},
+    {'BLFileInfo',      {fg = "#000000", bg="#00afaf", bold = true}},
 },
 enable_git = true,
 enable_lsp = true,
@@ -62,8 +62,8 @@ You can pass custom configurations to setup call, for ex
 ```lua
 require('bottomline.nvim').setup({
     highlights = {
-        {'BLDefault',       {fg = "#000000", bg="#5faf00", gui=nil}},
-        {'BLNormalMode',    {fg = "#ffffff", bg="#282828", gui="bold"}},
+        {'BLNormalMode',    {fg = "#000000", bg="#5faf00", bold = true}},
+        {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
     },
     enable_lsp = false,
     display_buf_no = true,
