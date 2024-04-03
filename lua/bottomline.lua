@@ -1,6 +1,6 @@
----------------------------------------------------
------------------ BottomLine Main -----------------
----------------------------------------------------
+--------------------------------------------------------------------------------------------------
+--------------------------------- bottomline.nvim ------------------------------------------------
+--------------------------------------------------------------------------------------------------
 -- Author - mnjm - github.com/mnjm
 -- Repo - github.com/mnjm/bottomline.nvim
 
@@ -9,15 +9,18 @@ local M = {}
 local default_config = {
     highlights = {
         {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
-        {'BLNormalMode',    {fg = "#000000", bg="#5faf00", bold = true}},
+        {'BLNormalMode',    {fg = "#000000", bg="#00afaf", bold = true}},
         {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", bold = true}},
         {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", bold = true}},
         {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", bold = true}},
         {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
         {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", bold = true}},
         {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
-        {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", bold = false}},
-        {'BLFileInfo',      {fg = "#000000", bg="#00afaf", bold = true}},
+        {'BLGitInfo',       {fg = "#000000", bg="#5f8787", bold = false}},
+        {'BLLspInfo',       {link = 'BLGitInfo'}},
+        {'BlWinbarTitle',   {fg = "#000000", bg="#5faf00", bold = true}},
+        {'BLWinbarFill',    {link = 'BLFill'}},
+        {'BLWinbarTrail',   {link = 'BLTrail'}},
     },
     enable_git = true,
     enable_lsp = true,
@@ -201,9 +204,9 @@ local generate_winbar = function()
     end
     local winbar = ""
     if count > 1 then -- if more than 1 fixed windows in the current tabpage
-        winbar = "%#BLFileInfo# %<%t%m%r %#BLFill#"
+        winbar = "%#BLWinbarTitle# %<%t%m%r %#BLWinbarFill#"
         if M.config.display_buf_no then
-            winbar = winbar .. "%=%#BLFileInfo#" .. get_buffernumber()
+            winbar = winbar .. "%=%#BLWinbarTrail#" .. get_buffernumber()
         end
     end
     -- set winbar
@@ -216,16 +219,16 @@ M.active = function()
     local lspinfo = get_lspinfo()
     local ret = table.concat {
         mode_color, mode,
-        "%#BLOtherInfo#", get_gitinfo(),
+        "%#BLGitInfo#", get_gitinfo(),
         "%#BLFill#", "%=",
-        "%#BLFileInfo#", get_filepath(),
+        mode_color, get_filepath(),
         "%#BLFill#", "%=",
         "%#BLOtherInfo#", lspinfo,
         "%#BLTrail#", get_filetype(),
     }
     if M.config.display_buf_no then
         ret = ret .. table.concat {
-            "%#BLOtherInfo#", get_lineinfo(),
+            "%#BLGitInfo#", get_lineinfo(),
             mode_color, get_buffernumber(),
         }
     else
@@ -245,11 +248,25 @@ M.inactive = function()
     }
 end
 
+
 local setup_statusline = function()
+    -- set the statusline
     vim.opt.statusline='%!v:lua._bottomline.active()'
     local _au = vim.api.nvim_create_augroup('BottomLine statusline', { clear = true })
-    -- enter aucmd
-    vim.api.nvim_create_autocmd({'WinEnter', 'BufEnter'}, {
+    local refresh_events = {
+        'WinEnter',
+        'BufEnter',
+        'BufWritePost',
+        'SessionLoadPost',
+        'FileChangedShellPost',
+        'VimResized',
+        'Filetype',
+        'CursorMoved',
+        'CursorMovedI',
+        'ModeChanged'
+    }
+    -- refresh aucmd
+    vim.api.nvim_create_autocmd(refresh_events, {
         pattern = "*",
         command = 'setlocal statusline=%!v:lua._bottomline.active()',
         group = _au,
