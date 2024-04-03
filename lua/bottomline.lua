@@ -8,13 +8,13 @@ local M = {}
 
 local default_config = {
     highlights = {
-        {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
         {'BLNormalMode',    {fg = "#000000", bg="#00afaf", bold = true}},
         {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", bold = true}},
         {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", bold = true}},
         {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", bold = true}},
         {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
         {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", bold = true}},
+        {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
         {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
         {'BLGitInfo',       {fg = "#000000", bg="#5f8787", bold = false}},
         {'BLLspInfo',       {link = 'BLGitInfo'}},

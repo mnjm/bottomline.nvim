@@ -7,7 +7,7 @@ A simple minimal statusline plugin that supports
 - winbar
 
 ### Demo
-![Demo Gif](https://github.com/mnjm/github-media-repo/blob/a1918ab62ca1f8ef95bb2ada9bc4ce44c5152200/bottomline.nvim/demo.gif)
+![Demo Gif](https://github.com/mnjm/github-media-repo/blob/ddf5161d67e9d15606602c8089d30a93dcddf70a/bottomline.nvim/demo.gif)
 ### Screenshots
 ![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/1.png)
 ![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/2.png)
@@ -31,16 +31,19 @@ Dependencies - Optional
 
 ```lua
 highlights = {
-    {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
-    {'BLNormalMode',    {fg = "#000000", bg="#5faf00", bold = true}},
+    {'BLNormalMode',    {fg = "#000000", bg="#00afaf", bold = true}},
     {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", bold = true}},
     {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", bold = true}},
     {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", bold = true}},
     {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
     {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", bold = true}},
+    {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
     {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
-    {'BLOtherInfo',     {fg = "#000000", bg="#5f8787", bold = false}},
-    {'BLFileInfo',      {fg = "#000000", bg="#00afaf", bold = true}},
+    {'BLGitInfo',       {fg = "#000000", bg="#5f8787", bold = false}},
+    {'BLLspInfo',       {link = 'BLGitInfo'}},
+    {'BlWinbarTitle',   {fg = "#000000", bg="#5faf00", bold = true}},
+    {'BLWinbarFill',    {link = 'BLFill'}},
+    {'BLWinbarTrail',   {link = 'BLTrail'}},
 },
 enable_git = true,
 enable_lsp = true,
