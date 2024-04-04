@@ -4,10 +4,9 @@
 A simple minimal statusline plugin that supports
 - gitsigns
 - LSP
-- winbar
 
 ### Demo
--- TODO: This gif is outdated will update soon :)
+-- TODO: Demp and ss are outdated will update soon :)
 ![Demo Gif](https://github.com/mnjm/github-media-repo/blob/ddf5161d67e9d15606602c8089d30a93dcddf70a/bottomline.nvim/demo.gif)
 ### Screenshots
 ![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/1.png)
@@ -32,18 +31,22 @@ Dependencies - Optional
 
 ```lua
 highlights = {
+    -- Active Statusline
     {'BLMode',          {fg = "#000000", bg="#00afaf", bold = true}},
-    {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
-    {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
     {'BLGitInfo',       {fg = "#000000", bg="#5f8787", bold = false}},
+    {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
+    {'BLFile',          {link = 'BLMode'}},
     {'BLLspInfo',       {link = 'BLGitInfo'}},
-    {'BlWinbarTitle',   {fg = "#000000", bg="#5faf00", bold = true}},
-    {'BLWinbarFill',    {link = 'BLFill'}},
-    {'BLWinbarTrail',   {link = 'BLTrail'}},
+    {'BLFileType',      {fg = "#ffffff", bg="#585858", bold = false}},
+    {'BLLine',          {link = 'BLLspInfo'}},
+    {'BLBuf',           {link = 'BLMode'}},
+    -- Inactive statusline
+    {'BLFileInactive',  {link = 'BLFileType'}},
+    {'BLBufInactive',   {link = 'BLFileInactive'}},
 },
+seperators = { '', '' },
 enable_git = true,
 enable_lsp = true,
-enable_winbar = true,
 display_buf_no = false,
 git_symbols = {
     branch = "",
@@ -66,6 +69,8 @@ require('bottomline.nvim').setup({
     highlights = {
         {'BLMode',    {fg = "#000000", bg="#5faf00", bold = true}},
     },
+    -- seperators = { '',  '' },
+    seperators = { '',  '' },
     enable_lsp = false,
     display_buf_no = true,
     git_symbols = { branch = "" },
@@ -76,4 +81,4 @@ require('bottomline.nvim').setup({
 This work is derived from
 - https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html
 - https://elianiva.my.id/post/neovim-lua-statusline
-
+- and [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)

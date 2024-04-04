@@ -57,6 +57,7 @@ end
 
 M.setup_highlights = function(highlights)
     -- Set highlights listed in config
+    if not highlights then return end
     for _, hl in pairs(highlights) do
         vim.api.nvim_set_hl(0, hl[1], hl[2])
     end

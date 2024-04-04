@@ -10,15 +10,26 @@ local M = {}
 
 local default_config = {
     highlights = {
+        -- Active Statusline
         {'BLMode',          {fg = "#000000", bg="#00afaf", bold = true}},
-        {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
-        {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
         {'BLGitInfo',       {fg = "#000000", bg="#5f8787", bold = false}},
+        {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
+        {'BLFile',          {link = 'BLMode'}},
         {'BLLspInfo',       {link = 'BLGitInfo'}},
+        {'BLFileType',      {fg = "#ffffff", bg="#585858", bold = false}},
+        {'BLLine',          {link = 'BLLspInfo'}},
+        {'BLBuf',           {link = 'BLMode'}},
+        -- Inactive statusline
+        {'BLFileInactive',  {link = 'BLFileType'}},
+        {'BLBufInactive',   {link = 'BLFileInactive'}},
+        -- Winbar
         {'BlWinbarTitle',   {fg = "#000000", bg="#5faf00", bold = true}},
         {'BLWinbarFill',    {link = 'BLFill'}},
-        {'BLWinbarTrail',   {link = 'BLTrail'}},
+        {'BLWinbarBuf',     {link = 'BLFileType'}},
     },
+    -- seperators = { '',  '' },
+    -- seperators = { '',  '' },
+    seperators = { '', '' },
     enable_git = true,
     enable_lsp = true,
     enable_winbar = true,
@@ -39,6 +50,7 @@ local default_config = {
 
 local validate_config = function(cfg)
     vim.validate({ highlights = { cfg.highlights, "table" } })
+    vim.validate({ seperators = { cfg.seperators, "table" } })
     vim.validate({ git_symbols = { cfg.git_symbols, "table" } })
     vim.validate({ lsp_symbols = { cfg.lsp_symbols, "table" } })
     vim.validate({ enable_git = { cfg.enable_git, "boolean" } })
