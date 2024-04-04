@@ -7,6 +7,7 @@ A simple minimal statusline plugin that supports
 - winbar
 
 ### Demo
+-- TODO: This gif is outdated will update soon :)
 ![Demo Gif](https://github.com/mnjm/github-media-repo/blob/ddf5161d67e9d15606602c8089d30a93dcddf70a/bottomline.nvim/demo.gif)
 ### Screenshots
 ![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/1.png)
@@ -31,12 +32,7 @@ Dependencies - Optional
 
 ```lua
 highlights = {
-    {'BLNormalMode',    {fg = "#000000", bg="#00afaf", bold = true}},
-    {'BLReplaceMode',   {fg = "#000000", bg="#d7875f", bold = true}},
-    {'BLCommandMode',   {fg = "#000000", bg="#ffaf00", bold = true}},
-    {'BLInsertMode',    {fg = "#000000", bg="#5fafd7", bold = true}},
-    {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
-    {'BLUnknownMode',   {fg = "#000000", bg="#b3684f", bold = true}},
+    {'BLMode',          {fg = "#000000", bg="#00afaf", bold = true}},
     {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
     {'BLTrail',         {fg = "#ffffff", bg="#585858", bold = false}},
     {'BLGitInfo',       {fg = "#000000", bg="#5f8787", bold = false}},
@@ -63,13 +59,12 @@ lsp_symbols = {
 },
 ```
 
-You can pass custom configurations to setup call, for ex
+You can override default config by passing custom config to setup call, for ex
 
 ```lua
 require('bottomline.nvim').setup({
     highlights = {
-        {'BLNormalMode',    {fg = "#000000", bg="#5faf00", bold = true}},
-        {'BLVisualMode',    {fg = "#000000", bg="#ff5faf", bold = true}},
+        {'BLMode',    {fg = "#000000", bg="#5faf00", bold = true}},
     },
     enable_lsp = false,
     display_buf_no = true,
