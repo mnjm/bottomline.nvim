@@ -32,17 +32,17 @@ Dependencies - Optional
 ```lua
 highlights = {
     -- Active Statusline
-    {'BLMode',          {fg = "#000000", bg="#00afaf", bold = true}},
-    {'BLGitInfo',       {fg = "#000000", bg="#5f8787", bold = false}},
-    {'BLFill',          {fg = "#ffffff", bg="#282828", bold = false}},
-    {'BLFile',          {link = 'BLMode'}},
-    {'BLLspInfo',       {link = 'BLGitInfo'}},
-    {'BLFileType',      {fg = "#ffffff", bg="#585858", bold = false}},
-    {'BLLine',          {link = 'BLLspInfo'}},
-    {'BLBuf',           {link = 'BLMode'}},
+    BLMode          = {fg = "#000000", bg = "#5faf5f", bold = true},
+    BLGitInfo       = {fg = "#000000", bg="#5f8787", bold = false},
+    BLFill          = {fg = "#ffffff", bg="#282828", bold = false},
+    BLFile          = {link = 'BLMode'},
+    BLLspInfo       = {link = 'BLGitInfo'},
+    BLFileType      = {fg = "#ffffff", bg = "#878787", bold = false},
+    BLLine          = {fg = "#ffffff", bg="#585858", bold = false},
+    BLBuf           = {link = 'BLMode'},
     -- Inactive statusline
-    {'BLFileInactive',  {link = 'BLFileType'}},
-    {'BLBufInactive',   {link = 'BLFileInactive'}},
+    BLFileInactive  = {link = 'BLFileType'},
+    BLBufInactive   = {link = 'BLFileInactive'},
 },
 seperators = { '', '' },
 enable_git = true,
@@ -67,7 +67,7 @@ You can override default config by passing custom config to setup call, for ex
 ```lua
 require('bottomline.nvim').setup({
     highlights = {
-        {'BLMode',    {fg = "#000000", bg="#5faf00", bold = true}},
+        BLMode = {fg = "#000000", bg="#5faf00", bold = true},
     },
     -- seperators = { '',  '' },
     seperators = { '',  '' },

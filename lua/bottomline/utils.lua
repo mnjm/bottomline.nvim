@@ -55,11 +55,18 @@ M.mode_lookup = function()
     return ret
 end
 
+M.get_table_len = function(tbl)
+    local count = 0
+    for _ in pairs(tbl) do count = count + 1 end
+    return count
+end
+
 M.setup_highlights = function(highlights)
-    -- Set highlights listed in config
     if not highlights then return end
-    for _, hl in pairs(highlights) do
-        vim.api.nvim_set_hl(0, hl[1], hl[2])
+    for name, data in pairs(highlights) do
+        -- in case if hightligh in default_config has link and migrated to user passed configs
+        if data['link'] and M.get_table_len(data) > 1 then data['link'] = nil end
+        vim.api.nvim_set_hl(0, name, data)
     end
 end
 

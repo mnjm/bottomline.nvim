@@ -70,17 +70,16 @@ local function get_lspinfo()
 end
 
 -- Get filepath with flags(modified, readonly, helpfile, preview)
-local function get_filepath(active_flag)
+local function get_filepath(icon, active_flag)
     local hl = active_flag and "BLFile" or "BLFileInactive"
     local left_sep = seperators.get_sep_with_hl(hl, "BLFill", 2)
     local right_sep = seperators.get_sep_with_hl(hl, "BLFill", 1)
     local filepath = "%<%F%m%r%h%w"
-    return string.format("%s%%#%s# %s %s", left_sep, hl, filepath, right_sep)
+    return string.format("%s%%#%s# %s %s %s", left_sep, hl, icon, filepath, right_sep)
 end
 
 -- Get filetype
-local function get_filetype()
-    local icon = utils.get_icon(vim.fn.expand("%p"))
+local function get_filetype(icon)
     local ftype = vim.bo.filetype
     if ftype == '' then return '' end
     return "%#BLFileType#" .. string.format(' %s %s ', icon, ftype):lower()
@@ -108,6 +107,7 @@ local function get_buffernumber(active_flag)
 end
 
 M.active = function()
+    local icon = utils.get_icon(vim.fn.expand("%p"))
     local gitinfo = get_gitinfo()
     local mode_sep = seperators.get_sep_with_hl("BLMode",
         gitinfo == "" and "BLFill" or "BLGitInfo", 1)
@@ -118,10 +118,10 @@ M.active = function()
         get_mode(), mode_sep,           -- mode
         gitinfo,                        -- git info
         "%#BLFill#", "%=",              -- filler
-        get_filepath(true),             -- filepath
+        get_filepath(icon, true),             -- filepath
         "%#BLFill#", "%=",              -- filler
         lspinfo,
-        ft_sep, get_filetype(),
+        ft_sep, get_filetype(icon),
         get_lineinfo(),
     }
     if M.config.display_buf_no then
@@ -134,9 +134,10 @@ M.active = function()
 end
 
 M.inactive = function()
+    local icon = utils.get_icon(vim.fn.expand("%p"))
     return table.concat {
         "%#BLFill#", "%=",
-        get_filepath(false),
+        get_filepath(icon, false),
         "%#BLFill#", "%=",
         get_buffernumber(false),
     }

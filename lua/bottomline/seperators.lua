@@ -44,7 +44,7 @@ M.get_seperator_highlights = function(seps)
         local fg = vim.api.nvim_get_hl(0, { name = hl_t[1], link = false }).bg
         local bg = vim.api.nvim_get_hl(0, { name = hl_t[2], link = false }).bg
         local name = string.format("%s_2_%s", hl_t[1], hl_t[2])
-        table.insert(ret, {name, {fg = fg, bg = bg} })
+        ret[name] = {fg = fg, bg = bg}
     end
     return ret
 end
