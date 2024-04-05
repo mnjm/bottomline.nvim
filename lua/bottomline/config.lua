@@ -8,7 +8,9 @@
 
 local M = {}
 
+-- default configurations
 local default_config = {
+    -- bottomline highlights
     highlights = {
         -- Active Statusline
         BLMode          = {fg = "#000000", bg = "#5faf5f", bold = true},
@@ -27,13 +29,13 @@ local default_config = {
         BLWinbarFill    = {link = 'BLFill'},
         BLWinbarBuf     = {link = 'BLFileType'},
     },
+    seperators = { '', '' },                        -- section seperators
     -- seperators = { '',  '' },
     -- seperators = { '',  '' },
-    seperators = { '', '' },
-    enable_git = true,
-    enable_lsp = true,
-    enable_winbar = true,
-    display_buf_no = false,
+    enable_git = true,                              -- enable git section
+    enable_lsp = true,                              -- enable lstp section
+    enable_winbar = true,                           -- enable winbar
+    display_buf_no = false,                         -- add aditional buf number section at the end of statusline
     git_symbols = {
         branch = "",
         added = "+",
@@ -48,6 +50,8 @@ local default_config = {
     },
 }
 
+-- config validator
+-- @param cfg config to validate
 local validate_config = function(cfg)
     vim.validate({ highlights = { cfg.highlights, "table" } })
     vim.validate({ seperators = { cfg.seperators, "table" } })
@@ -59,9 +63,12 @@ local validate_config = function(cfg)
     vim.validate({ display_buf_no = { cfg.display_buf_no, "boolean" } })
 end
 
+-- initialize config
+-- @param cfg custom config from setup call
 M.init_config = function(cfg)
     vim.validate({ cfg = { cfg, 'table' } })
     cfg = cfg or {}
+    -- extend default_config and keep the changes from custom config (cfg)
     local config = vim.tbl_deep_extend("keep", cfg, default_config)
     validate_config(config)
     return config

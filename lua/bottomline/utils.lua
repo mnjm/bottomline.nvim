@@ -8,7 +8,7 @@
 
 local M = {}
 
--- Copied from lualine.nvim
+-- mode lookup table copied from lualine.nvim
 local mode_map = {
   ['n']      = 'NORMAL',
   ['no']     = 'O-PENDING',
@@ -48,6 +48,8 @@ local mode_map = {
   ['t']      = 'TERMINAL',
 }
 
+-- lookup mode
+-- @return mode string
 M.mode_lookup = function()
     local mode = vim.api.nvim_get_mode().mode
     local ret = mode_map[mode]
@@ -55,12 +57,17 @@ M.mode_lookup = function()
     return ret
 end
 
+-- get count of number of items in table
+-- @param tbl input table
+-- @return number | number of items in table
 M.get_table_len = function(tbl)
     local count = 0
     for _ in pairs(tbl) do count = count + 1 end
     return count
 end
 
+-- create hightlight groups
+-- @param hightlights table
 M.setup_highlights = function(highlights)
     if not highlights then return end
     for name, data in pairs(highlights) do
@@ -70,12 +77,18 @@ M.setup_highlights = function(highlights)
     end
 end
 
+-- dont error out if module not found
+-- @param module_name - string module name
+-- @return module tbl if found else nil
 M.safe_require = function(module_name)
     local status_ok, mod = pcall(require, module_name)
     local ret = status_ok and mod or nil
     return ret
 end
 
+-- get icon for file from nvim-web-devicons plugin
+-- @param fpath fullpath of the file
+-- @return icon if found else "" (empty string)
 M.get_icon = function(fpath)
     local file_name, file_ext = vim.fn.fnamemodify(fpath, ":t"), vim.fn.fnamemodify(fpath, ":e")
     local nvim_icons = M.safe_require("nvim-web-devicons")
@@ -86,18 +99,23 @@ M.get_icon = function(fpath)
     return icon
 end
 
---  check if given window is relative
-M.is_window_relative = function(win_id)
-    return vim.api.nvim_win_get_config(win_id).relative ~= ''
+--  check if given window is fixed
+--  @param win_id window id
+--  @return true if window is fixed
+M.is_window_fixed = function(win_id)
+    return vim.api.nvim_win_get_config(win_id).relative == ''
 end
 
+-- get count of active windows in a given tabpage
+-- @param tab_no tabpage ref
+-- @return active window count
 M.get_active_win_count = function(tab_no)
     if not tab_no then tab_no = 0 end
     local wins = vim.api.nvim_tabpage_list_wins(tab_no) -- get windows in the tabpage tabpage
     -- count fixed (non relative windows)
     local count = 0
     for _, win_id in ipairs(wins) do
-        if not M.is_window_relative(win_id) then count = count + 1 end
+        if M.is_window_fixed(win_id) then count = count + 1 end
     end
     return count
 end

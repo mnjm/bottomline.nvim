@@ -5,12 +5,10 @@ A simple minimal statusline plugin that supports
 - gitsigns
 - LSP
 
-### Demo
--- TODO: Demp and ss are outdated will update soon :)
-![Demo Gif](https://github.com/mnjm/github-media-repo/blob/ddf5161d67e9d15606602c8089d30a93dcddf70a/bottomline.nvim/demo.gif)
 ### Screenshots
-![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/1.png)
-![Demo image](https://github.com/mnjm/github-media-repo/blob/6a351736a158012ff40b008895c2a308e5aa4bdb/bottomline.nvim/2.png)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss1.png)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss2.png)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss3.png)
 
 - Checkout [topline.nvim](https://github.com/mnjm/topline.nvim) for tabline plugin
 
@@ -30,6 +28,7 @@ Dependencies - Optional
 ### Default configurations
 
 ```lua
+-- bottomline highlights
 highlights = {
     -- Active Statusline
     BLMode          = {fg = "#000000", bg = "#5faf5f", bold = true},
@@ -44,10 +43,10 @@ highlights = {
     BLFileInactive  = {link = 'BLFileType'},
     BLBufInactive   = {link = 'BLFileInactive'},
 },
-seperators = { '', '' },
-enable_git = true,
-enable_lsp = true,
-display_buf_no = false,
+seperators = { '', '' },                        -- section seperators
+enable_git = true,                              -- enable git section
+enable_lsp = true,                              -- enable lstp section
+display_buf_no = false,                         -- add aditional buf number section at the end of statusline
 git_symbols = {
     branch = "",
     added = "+",

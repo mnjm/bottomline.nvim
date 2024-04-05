@@ -8,10 +8,12 @@
 
 local M = {}
 
-M.seperator_hls = {}
+-- is seperators enabled
 M.enabled = false
+-- local seperator reference
 M.seperators = nil
 
+-- highlight lookup for seperators
 local hl_transitions = {
     -- active
     {'BLMode', 'BLGitInfo'},
@@ -28,6 +30,9 @@ local hl_transitions = {
     {'BLBufInactive', 'BLFill'},
 }
 
+-- helper func to check if seperators are empty
+-- @param sep seperators
+-- @return true if seperators are empty
 local is_sep_empty = function(sep)
     local ret = true
     ret = ret and (#sep[1] == 0)
@@ -35,6 +40,9 @@ local is_sep_empty = function(sep)
     return ret
 end
 
+-- prepare list of highlights for seperators
+-- @param seps seperators from config
+-- @return table | with highlights for seperators
 M.get_seperator_highlights = function(seps)
     M.enabled = not is_sep_empty(seps)
     local ret = {}
@@ -49,7 +57,11 @@ M.get_seperator_highlights = function(seps)
     return ret
 end
 
-M.get_sep_with_hl = function(hl_1, hl_2, idx)
+-- get seperator with highlight
+-- @param hl_1 highlight to transition from
+-- @param hl_2 highlight to transtion to
+-- @param idx seperator idx ( weather right ie 1 or left ie 2)
+M.get_seperator = function(hl_1, hl_2, idx)
     if not M.enabled then return "" end
     local hl_grp = "%#" .. string.format("%s_2_%s", hl_1, hl_2) .. "#"
     return hl_grp .. M.seperators[idx]
