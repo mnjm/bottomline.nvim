@@ -150,7 +150,7 @@ M.inactive = function()
         "%#BLFill#", "%=",
         get_filepath(icon, false),
         "%#BLFill#", "%=",
-        get_buffernumber(false),
+        get_buffernumber(false) and M.config.display_buf_no or "",
     }
 end
 
