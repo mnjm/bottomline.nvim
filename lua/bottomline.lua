@@ -12,6 +12,7 @@ local M = {}
 local config = require('bottomline.config')
 local utils = require('bottomline.utils')
 local seperators = require('bottomline.seperators')
+local winbar = require('bottomline.winbar')
 
 -- Gets the current mode
 -- @return mode string with highlight
@@ -154,20 +155,6 @@ M.inactive = function()
     }
 end
 
--- winbar generator
--- @return winbar string
-local generate_winbar = function()
-    local winbar = ""
-    if utils.get_active_win_count() > 1 then -- if more than 1 fixed windows in the current tabpage
-        winbar = "%#BLWinbarTitle# %<%t%m%r %#BLWinbarFill#"
-        if M.config.display_buf_no then
-            winbar = winbar .. "%=%#BLWinbarBuf#" .. get_buffernumber()
-        end
-    end
-    -- set winbar
-    vim.opt.winbar = winbar
-end
-
 -- create statusline aucmds
 local setup_statusline = function()
     -- set the statusline
@@ -201,40 +188,27 @@ local setup_statusline = function()
     })
 end
 
--- create winbar aucmds
-local setup_winbar = function()
-    if not M.config.enable_winbar then return end
-    local _au = vim.api.nvim_create_augroup('BottomLine winbar', { clear = true })
-    -- Winbar
-    vim.api.nvim_create_autocmd({'WinEnter', 'WinLeave'}, {
-        pattern = "*",
-        callback = generate_winbar,
-        group = _au,
-        desc = "Setup winbar statusline",
-    })
-end
-
 -- initialize bottomline plugin
-local init_bottomline = function(cfg)
+local init_bottomline = function()
     -- Exposing plugin
     _G._bottomline = M
-    -- Config
-    M.config = config.init_config(cfg)
     -- Create highlights
     utils.setup_highlights(M.config.highlights)
     -- Initialize seperator highlights
-    utils.setup_highlights(seperators.get_seperator_highlights(M.config.seperators))
+    utils.setup_highlights(seperators.prepare_seperator_highlights(M.config.seperators))
 end
 
 -- bottomline setup call
 -- @param cfg custom configurations for bottomline.nvim
 function M.setup(cfg)
+    -- Config
+    M.config = config.init_config(cfg)
     -- init
-    init_bottomline(cfg)
+    init_bottomline()
     -- Create statusline autocommands
     setup_statusline()
     -- enable winbar
-    setup_winbar()
+    winbar.init_winbar(M.config, utils, seperators)
 end
 
 return M

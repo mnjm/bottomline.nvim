@@ -9,25 +9,31 @@
 local M = {}
 
 -- is seperators enabled
-M.enabled = false
+M.enabled = { statusline = false, winbar = false }
 -- local seperator reference
-M.seperators = nil
+M.seperators = { statusline = nil, winbar = nil }
 
 -- highlight lookup for seperators
 local hl_transitions = {
-    -- active
-    {'BLMode', 'BLGitInfo'},
-    {'BLMode', 'BLFill'},
-    {'BLGitInfo', 'BLFill'},
-    {'BLFile', 'BLFill'},
-    {'BLLspInfo', 'BLFill'},
-    {'BLFileType', 'BLFill'},
-    {'BLFileType', 'BLLspInfo'},
-    {'BLLine', 'BLFileType'},
-    {'BLBuf', 'BLLine'},
-    -- inactive
-    {'BLFileInactive', 'BLFill'},
-    {'BLBufInactive', 'BLFill'},
+    statusline = {
+        -- active
+        {'BLMode', 'BLGitInfo'},
+        {'BLMode', 'BLFill'},
+        {'BLGitInfo', 'BLFill'},
+        {'BLFile', 'BLFill'},
+        {'BLLspInfo', 'BLFill'},
+        {'BLFileType', 'BLFill'},
+        {'BLFileType', 'BLLspInfo'},
+        {'BLLine', 'BLFileType'},
+        {'BLBuf', 'BLLine'},
+        -- inactive
+        {'BLFileInactive', 'BLFill'},
+        {'BLBufInactive', 'BLFill'},
+    },
+    winbar = {
+        {'BLWinbarTitle', 'BLWinbarFill'},
+        {'BLWinbarBuf', 'BLWinbarFill'},
+    },
 }
 
 -- helper func to check if seperators are empty
@@ -40,15 +46,12 @@ local is_sep_empty = function(sep)
     return ret
 end
 
--- prepare list of highlights for seperators
--- @param seps seperators from config
+-- get seperator highlight table given transitions
+-- @param hl_Ts highlight transitions tbl
 -- @return table | with highlights for seperators
-M.get_seperator_highlights = function(seps)
-    M.enabled = not is_sep_empty(seps)
+local get_seperator_hls = function (hl_Ts)
     local ret = {}
-    if not M.enabled then return ret end
-    M.seperators = seps
-    for _, hl_t in ipairs(hl_transitions) do
+    for _, hl_t in ipairs(hl_Ts) do
         local fg = vim.api.nvim_get_hl(0, { name = hl_t[1], link = false }).bg
         local bg = vim.api.nvim_get_hl(0, { name = hl_t[2], link = false }).bg
         local name = string.format("%s_2_%s", hl_t[1], hl_t[2])
@@ -57,14 +60,33 @@ M.get_seperator_highlights = function(seps)
     return ret
 end
 
+-- prepare list of highlights for seperators
+-- @param seps seperators from config
+-- @return table | with highlights for seperators
+M.prepare_seperator_highlights = function(seps, for_winbar)
+    local key = 'statusline'
+    if for_winbar then key = 'winbar' end
+    M.enabled[key] = not is_sep_empty(seps)
+    local ret = {}
+    if M.enabled[key] then
+        M.seperators[key] = seps
+        ret = get_seperator_hls(hl_transitions[key])
+    end
+    return ret
+end
+
 -- get seperator with highlight
 -- @param hl_1 highlight to transition from
 -- @param hl_2 highlight to transtion to
 -- @param idx seperator idx ( weather right ie 1 or left ie 2)
-M.get_seperator = function(hl_1, hl_2, idx)
-    if not M.enabled then return "" end
+-- @param (optional) for_winbar boolean - true when prep for winbar
+-- @return string | seperator with highlights added
+M.get_seperator = function(hl_1, hl_2, idx, for_winbar)
+    local key = 'statusline'
+    if for_winbar then key = 'winbar' end
+    if not M.enabled[key] then return "" end
     local hl_grp = "%#" .. string.format("%s_2_%s", hl_1, hl_2) .. "#"
-    return hl_grp .. M.seperators[idx]
+    return hl_grp .. M.seperators[key][idx]
 end
 
 return M

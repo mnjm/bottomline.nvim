@@ -4,6 +4,7 @@
 A simple minimal statusline plugin that supports
 - gitsigns
 - LSP
+- and winbar
 
 ### Screenshots
 ![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss1.png)
@@ -43,10 +44,13 @@ highlights = {
     BLFileInactive  = {link = 'BLFileType'},
     BLBufInactive   = {link = 'BLFileInactive'},
 },
-seperators = { '', '' },                        -- section seperators
-enable_git = true,                              -- enable git section
-enable_lsp = true,                              -- enable lstp section
-display_buf_no = false,                         -- add aditional buf number section at the end of statusline
+seperators = { '', '' },              -- seperators icons
+-- seperators = { '',  '' },
+-- seperators = { '',  '' },
+enable_git = true,                    -- enable git section
+enable_lsp = true,                    -- enable lstp section
+enable_winbar = true,                 -- enable winbar
+display_buf_no = false,               -- add additional buf number section at the end of statusline
 git_symbols = {
     branch = "",
     added = "+",
@@ -59,6 +63,17 @@ lsp_symbols = {
     info = "Info",
     hint = "Hint",
 },
+winbar = {
+    enable = true,
+    display_buf_no = true,      -- add additional buf no to end of winbar
+    seperators = nil,           -- if this is nil one from Statusline config will be used
+    -- Winbar highlights
+    highlights = {
+        BlWinbarTitle   = {link = 'BLMode'},
+        BLWinbarFill    = {link = 'BLFill'},
+        BLWinbarBuf     = {link = 'BLGitInfo'},
+    }
+}
 ```
 
 You can override default config by passing custom config to setup call, for ex
@@ -66,13 +81,15 @@ You can override default config by passing custom config to setup call, for ex
 ```lua
 require('bottomline.nvim').setup({
     highlights = {
-        BLMode = {fg = "#000000", bg="#5faf00", bold = true},
+        BLMode = { fg="#282c34", bg="#98c379", bold=true },
     },
     -- seperators = { '',  '' },
     seperators = { '',  '' },
-    enable_lsp = false,
-    display_buf_no = true,
-    git_symbols = { branch = "" },
+    git_symbols = { branch = "" },
+    winbar = {
+        enable = true,
+        display_buf_no = true,
+    }
 })
 ```
 
