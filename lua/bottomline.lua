@@ -12,7 +12,6 @@ local M = {}
 local config = require('bottomline.config')
 local utils = require('bottomline.utils')
 local seperators = require('bottomline.seperators')
-local winbar = require('bottomline.winbar')
 
 -- Gets the current mode
 -- @return mode string with highlight
@@ -114,10 +113,18 @@ local function get_buffernumber(active_flag)
     return sep .. hl .. " B:%n "
 end
 
+-- get icon
+-- @param file path
+-- @return icon from nvim-dev-icons
+local function get_icon(fpath)
+    if M.config.enable_icons then return utils.get_icon(fpath)
+    else return "" end
+end
+
 -- active statusline generator
 -- @return active statusline string
 M.active = function()
-    local icon = utils.get_icon(vim.fn.expand("%p"))
+    local icon = get_icon(vim.fn.expand("%p"))
     local gitinfo = get_gitinfo()
     local mode_sep = seperators.get_seperator("BLMode",
         gitinfo == "" and "BLFill" or "BLGitInfo", 1)
@@ -146,7 +153,7 @@ end
 -- inactive statusline generator
 -- @return inactive statusline string
 M.inactive = function()
-    local icon = utils.get_icon(vim.fn.expand("%p"))
+    local icon = get_icon(vim.fn.expand("%p"))
     return table.concat {
         "%#BLFill#", "%=",
         get_filepath(icon, false),
@@ -194,8 +201,8 @@ local init_bottomline = function()
     _G._bottomline = M
     -- Create highlights
     utils.setup_highlights(M.config.highlights)
-    -- Initialize seperator highlights
-    utils.setup_highlights(seperators.prepare_seperator_highlights(M.config.seperators))
+    -- Initialize seperator module
+    seperators.init_seperators(M.config.seperators, utils.setup_highlights)
 end
 
 -- bottomline setup call
@@ -203,12 +210,12 @@ end
 function M.setup(cfg)
     -- Config
     M.config = config.init_config(cfg)
+    -- return if not enabled in config
+    if not M.config.enable then return end
     -- init
     init_bottomline()
     -- Create statusline autocommands
     setup_statusline()
-    -- enable winbar
-    winbar.init_winbar(M.config, utils, seperators)
 end
 
 return M

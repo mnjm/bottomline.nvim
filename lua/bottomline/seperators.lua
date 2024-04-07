@@ -9,31 +9,25 @@
 local M = {}
 
 -- is seperators enabled
-M.enabled = { statusline = false, winbar = false }
+M.enabled = false
 -- local seperator reference
-M.seperators = { statusline = nil, winbar = nil }
+M.seperators = nil
 
 -- highlight lookup for seperators
 local hl_transitions = {
-    statusline = {
-        -- active
-        {'BLMode', 'BLGitInfo'},
-        {'BLMode', 'BLFill'},
-        {'BLGitInfo', 'BLFill'},
-        {'BLFile', 'BLFill'},
-        {'BLLspInfo', 'BLFill'},
-        {'BLFileType', 'BLFill'},
-        {'BLFileType', 'BLLspInfo'},
-        {'BLLine', 'BLFileType'},
-        {'BLBuf', 'BLLine'},
-        -- inactive
-        {'BLFileInactive', 'BLFill'},
-        {'BLBufInactive', 'BLFill'},
-    },
-    winbar = {
-        {'BLWinbarTitle', 'BLWinbarFill'},
-        {'BLWinbarBuf', 'BLWinbarFill'},
-    },
+    -- active
+    {'BLMode', 'BLGitInfo'},
+    {'BLMode', 'BLFill'},
+    {'BLGitInfo', 'BLFill'},
+    {'BLFile', 'BLFill'},
+    {'BLLspInfo', 'BLFill'},
+    {'BLFileType', 'BLFill'},
+    {'BLFileType', 'BLLspInfo'},
+    {'BLLine', 'BLFileType'},
+    {'BLBuf', 'BLLine'},
+    -- inactive
+    {'BLFileInactive', 'BLFill'},
+    {'BLBufInactive', 'BLFill'},
 }
 
 -- helper func to check if seperators are empty
@@ -62,15 +56,14 @@ end
 
 -- prepare list of highlights for seperators
 -- @param seps seperators from config
+-- #param setup_highlights - utils function ref to setup highlights
 -- @return table | with highlights for seperators
-M.prepare_seperator_highlights = function(seps, for_winbar)
-    local key = 'statusline'
-    if for_winbar then key = 'winbar' end
-    M.enabled[key] = not is_sep_empty(seps)
+M.init_seperators = function(seps, setup_highlights)
+    M.enabled = not is_sep_empty(seps)
     local ret = {}
-    if M.enabled[key] then
-        M.seperators[key] = seps
-        ret = get_seperator_hls(hl_transitions[key])
+    if M.enabled then
+        M.seperators = seps
+        setup_highlights(get_seperator_hls(hl_transitions))
     end
     return ret
 end
@@ -79,14 +72,11 @@ end
 -- @param hl_1 highlight to transition from
 -- @param hl_2 highlight to transtion to
 -- @param idx seperator idx ( weather right ie 1 or left ie 2)
--- @param (optional) for_winbar boolean - true when prep for winbar
 -- @return string | seperator with highlights added
-M.get_seperator = function(hl_1, hl_2, idx, for_winbar)
-    local key = 'statusline'
-    if for_winbar then key = 'winbar' end
-    if not M.enabled[key] then return "" end
+M.get_seperator = function(hl_1, hl_2, idx)
+    if not M.enabled then return "" end
     local hl_grp = "%#" .. string.format("%s_2_%s", hl_1, hl_2) .. "#"
-    return hl_grp .. M.seperators[key][idx]
+    return hl_grp .. M.seperators[idx]
 end
 
 return M

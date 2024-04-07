@@ -86,12 +86,14 @@ M.safe_require = function(module_name)
     return ret
 end
 
+-- load nvim_icons
+local nvim_icons = M.safe_require("nvim-web-devicons")
+
 -- get icon for file from nvim-web-devicons plugin
 -- @param fpath fullpath of the file
 -- @return icon if found else "" (empty string)
 M.get_icon = function(fpath)
     local file_name, file_ext = vim.fn.fnamemodify(fpath, ":t"), vim.fn.fnamemodify(fpath, ":e")
-    local nvim_icons = M.safe_require("nvim-web-devicons")
     local icon = ""
     if nvim_icons then
         icon = nvim_icons.get_icon(file_name, file_ext, { default = true })
