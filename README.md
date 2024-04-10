@@ -3,9 +3,9 @@
 
 A minimal statusline plugin that supports gitsigns and LSP
 
-![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss1.png)
-![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss2.png)
-![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss3.png)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss1.png?raw=true)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss2.png?raw=true)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss3.png?raw=true)
 
 **My other plugins**
 - [TopLine.nvim](https://github.com/mnjm/topline.nvim) - Tabline plugin
@@ -52,7 +52,8 @@ require('bottomline').setup({
     enable = true,
     enable_icons = true,
     -- seperators = { '',  '' },
-    seperators = { '',  '' },
+    -- seperators = { '',  '' },
+    seperators = { '',  '' },
     git_symbols = { branch = "" },
     highlights = {
         BLMode = { fg="#282c34", bg="#98c379", bold=true },
@@ -108,3 +109,4 @@ This work is derived from
 - https://elianiva.my.id/post/neovim-lua-statusline
 - and [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
 
+**Licence** MIT
