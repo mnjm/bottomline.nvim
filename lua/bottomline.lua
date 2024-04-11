@@ -78,7 +78,7 @@ local function get_filepath(icon, active_flag)
     local hl = active_flag and "BLFile" or "BLFileInactive"
     local left_sep = seperators.get_seperator(hl, "BLFill", 2)
     local right_sep = seperators.get_seperator(hl, "BLFill", 1)
-    local filepath = "%<%F%m%r%h%w"
+    local filepath = "%<%f%m%r%h%w"
     return string.format("%s%%#%s# %s %s %s", left_sep, hl, icon, filepath, right_sep)
 end
 

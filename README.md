@@ -3,14 +3,12 @@
 
 A minimal statusline plugin that supports gitsigns and LSP
 
-![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss1.png?raw=true)
-![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss2.png?raw=true)
-![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss3.png?raw=true)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss.png?raw=true)
 
 **My other plugins**
 - [TopLine.nvim](https://github.com/mnjm/topline.nvim) - Tabline plugin
 - [WinLine.nvim](https://github.com/mnjm/winline.nvim) - Winbar plugin
-
+***
 ## Installation
 
 Optional Dependencies
@@ -40,6 +38,7 @@ use {
     dependencies = {  'lewis6991/gitsigns.nvim', 'nvim-tree/nvim-web-devicons' }
 }
 ```
+***
 ## Setup
 To start BottomLine, add below line in your neovim config
 ```lua
@@ -51,24 +50,28 @@ You can pass custom config to override default configs to setup call, for ex
 require('bottomline').setup({
     enable = true,
     enable_icons = true,
-    -- seperators = { '',  '' },
-    -- seperators = { '',  '' },
-    seperators = { '',  '' },
-    git_symbols = { branch = "" },
     highlights = {
         BLMode = { fg="#282c34", bg="#98c379", bold=true },
         BLLine = { link="BLMode" },
     },
+    -- seperators = { '',  '' },
+    -- seperators = { '',  '' },
+    seperators = { '',  '' },
+    git_symbols = { branch = "" },
+    lsp_symbols = {
+        error = " ",
+        warn = " ",
+        info = " ",
+        hint = " ",
+    },
 })
 ```
-Available configuration options
+Available default configuration options
 ```lua
 require('bottomline').setup({
     enable = true,
     enable_icons = false,
     seperators = { '', '' },              -- seperators icons
-    -- seperators = { '',  '' },
-    -- seperators = { '',  '' },
     enable_git = true,                    -- enable git section
     enable_lsp = true,                    -- enable lsp section
     display_buf_no = false,               -- add additional buf number section at the end of statusline
@@ -101,12 +104,16 @@ require('bottomline').setup({
     },
 })
 ```
-
-
+***
 ## Addendum
 This work is derived from
 - https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html
 - https://elianiva.my.id/post/neovim-lua-statusline
 - and [lualine.nvim](https://github.com/nvim-lualine/lualine.nvim)
 
+***
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss1.png?raw=true)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss2.png?raw=true)
+![Demo image](https://github.com/mnjm/github-media-repo/blob/main/bottomline.nvim/ss3.png?raw=true)
+***
 **Licence** MIT
