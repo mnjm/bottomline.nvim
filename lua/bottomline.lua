@@ -26,6 +26,7 @@ local function get_gitinfo()
     -- if disabled in settings
     if not M.config.enable_git then return "" end
 
+---@diagnostic disable-next-line: undefined-field
     local gitsigns = vim.b.gitsigns_status_dict
     local ret = ""
     -- if gitsigns not avail or not a git dir
